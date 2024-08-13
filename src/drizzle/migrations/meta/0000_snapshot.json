@@ -40,12 +40,8 @@
           "name": "activities_id_card_cards_id_card_fk",
           "tableFrom": "activities",
           "tableTo": "cards",
-          "columnsFrom": [
-            "id_card"
-          ],
-          "columnsTo": [
-            "id_card"
-          ],
+          "columnsFrom": ["id_card"],
+          "columnsTo": ["id_card"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -107,12 +103,8 @@
           "name": "cards_id_list_lists_id_list_fk",
           "tableFrom": "cards",
           "tableTo": "lists",
-          "columnsFrom": [
-            "id_list"
-          ],
-          "columnsTo": [
-            "id_list"
-          ],
+          "columnsFrom": ["id_list"],
+          "columnsTo": ["id_list"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -120,12 +112,8 @@
           "name": "cards_id_assigned_users_id_user_fk",
           "tableFrom": "cards",
           "tableTo": "users",
-          "columnsFrom": [
-            "id_assigned"
-          ],
-          "columnsTo": [
-            "id_user"
-          ],
+          "columnsFrom": ["id_assigned"],
+          "columnsTo": ["id_user"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -175,12 +163,8 @@
           "name": "comments_id_card_cards_id_card_fk",
           "tableFrom": "comments",
           "tableTo": "cards",
-          "columnsFrom": [
-            "id_card"
-          ],
-          "columnsTo": [
-            "id_card"
-          ],
+          "columnsFrom": ["id_card"],
+          "columnsTo": ["id_card"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -188,12 +172,8 @@
           "name": "comments_id_autor_users_id_user_fk",
           "tableFrom": "comments",
           "tableTo": "users",
-          "columnsFrom": [
-            "id_autor"
-          ],
-          "columnsTo": [
-            "id_user"
-          ],
+          "columnsFrom": ["id_autor"],
+          "columnsTo": ["id_user"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -236,12 +216,8 @@
           "name": "labels_id_card_cards_id_card_fk",
           "tableFrom": "labels",
           "tableTo": "cards",
-          "columnsFrom": [
-            "id_card"
-          ],
-          "columnsTo": [
-            "id_card"
-          ],
+          "columnsFrom": ["id_card"],
+          "columnsTo": ["id_card"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -284,12 +260,8 @@
           "name": "lists_id_table_tables_id_table_fk",
           "tableFrom": "lists",
           "tableTo": "tables",
-          "columnsFrom": [
-            "id_table"
-          ],
-          "columnsTo": [
-            "id_table"
-          ],
+          "columnsFrom": ["id_table"],
+          "columnsTo": ["id_table"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -333,12 +305,8 @@
           "name": "tables_id_creator_users_id_user_fk",
           "tableFrom": "tables",
           "tableTo": "users",
-          "columnsFrom": [
-            "id_creator"
-          ],
-          "columnsTo": [
-            "id_user"
-          ],
+          "columnsFrom": ["id_creator"],
+          "columnsTo": ["id_user"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -382,9 +350,7 @@
         "users_mail_unique": {
           "name": "users_mail_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "mail"
-          ]
+          "columns": ["mail"]
         }
       }
     }
