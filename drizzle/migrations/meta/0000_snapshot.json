@@ -1,15 +1,113 @@
 {
-  "id": "8cf80b3c-de2e-47ca-9c55-797b12f4d4a7",
+  "id": "a6fb57ec-ceef-4b88-be9a-09c0c531ac23",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.activities": {
-      "name": "activities",
+    "public.account": {
+      "name": "account",
       "schema": "",
       "columns": {
-        "id_activity": {
-          "name": "id_activity",
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider": {
+          "name": "provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "providerAccountId": {
+          "name": "providerAccountId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token_type": {
+          "name": "token_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id_token": {
+          "name": "id_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "session_state": {
+          "name": "session_state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "account_userId_user_userId_fk": {
+          "name": "account_userId_user_userId_fk",
+          "tableFrom": "account",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "userId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "account_provider_providerAccountId_pk": {
+          "name": "account_provider_providerAccountId_pk",
+          "columns": [
+            "provider",
+            "providerAccountId"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.activity": {
+      "name": "activity",
+      "schema": "",
+      "columns": {
+        "activityId": {
+          "name": "activityId",
           "type": "serial",
           "primaryKey": true,
           "notNull": true
@@ -27,8 +125,8 @@
           "notNull": false,
           "default": "now()"
         },
-        "id_card": {
-          "name": "id_card",
+        "cardId": {
+          "name": "cardId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -36,12 +134,16 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "activities_id_card_cards_id_card_fk": {
-          "name": "activities_id_card_cards_id_card_fk",
-          "tableFrom": "activities",
-          "tableTo": "cards",
-          "columnsFrom": ["id_card"],
-          "columnsTo": ["id_card"],
+        "activity_cardId_card_cardId_fk": {
+          "name": "activity_cardId_card_cardId_fk",
+          "tableFrom": "activity",
+          "tableTo": "card",
+          "columnsFrom": [
+            "cardId"
+          ],
+          "columnsTo": [
+            "cardId"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -49,12 +151,12 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.cards": {
-      "name": "cards",
+    "public.card": {
+      "name": "card",
       "schema": "",
       "columns": {
-        "id_card": {
-          "name": "id_card",
+        "cardId": {
+          "name": "cardId",
           "type": "serial",
           "primaryKey": true,
           "notNull": true
@@ -71,8 +173,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "creation_date": {
-          "name": "creation_date",
+        "creationDate": {
+          "name": "creationDate",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
@@ -84,36 +186,44 @@
           "primaryKey": false,
           "notNull": false
         },
-        "id_list": {
-          "name": "id_list",
+        "listId": {
+          "name": "listId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "id_assigned": {
-          "name": "id_assigned",
-          "type": "integer",
+        "assignedId": {
+          "name": "assignedId",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "cards_id_list_lists_id_list_fk": {
-          "name": "cards_id_list_lists_id_list_fk",
-          "tableFrom": "cards",
-          "tableTo": "lists",
-          "columnsFrom": ["id_list"],
-          "columnsTo": ["id_list"],
+        "card_listId_list_listId_fk": {
+          "name": "card_listId_list_listId_fk",
+          "tableFrom": "card",
+          "tableTo": "list",
+          "columnsFrom": [
+            "listId"
+          ],
+          "columnsTo": [
+            "listId"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "cards_id_assigned_users_id_user_fk": {
-          "name": "cards_id_assigned_users_id_user_fk",
-          "tableFrom": "cards",
-          "tableTo": "users",
-          "columnsFrom": ["id_assigned"],
-          "columnsTo": ["id_user"],
+        "card_assignedId_user_userId_fk": {
+          "name": "card_assignedId_user_userId_fk",
+          "tableFrom": "card",
+          "tableTo": "user",
+          "columnsFrom": [
+            "assignedId"
+          ],
+          "columnsTo": [
+            "userId"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -121,12 +231,12 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.comments": {
-      "name": "comments",
+    "public.comment": {
+      "name": "comment",
       "schema": "",
       "columns": {
-        "id_comment": {
-          "name": "id_comment",
+        "commentId": {
+          "name": "commentId",
           "type": "serial",
           "primaryKey": true,
           "notNull": true
@@ -144,36 +254,44 @@
           "notNull": false,
           "default": "now()"
         },
-        "id_card": {
-          "name": "id_card",
+        "cardId": {
+          "name": "cardId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "id_autor": {
-          "name": "id_autor",
-          "type": "integer",
+        "autorId": {
+          "name": "autorId",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "comments_id_card_cards_id_card_fk": {
-          "name": "comments_id_card_cards_id_card_fk",
-          "tableFrom": "comments",
-          "tableTo": "cards",
-          "columnsFrom": ["id_card"],
-          "columnsTo": ["id_card"],
+        "comment_cardId_card_cardId_fk": {
+          "name": "comment_cardId_card_cardId_fk",
+          "tableFrom": "comment",
+          "tableTo": "card",
+          "columnsFrom": [
+            "cardId"
+          ],
+          "columnsTo": [
+            "cardId"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "comments_id_autor_users_id_user_fk": {
-          "name": "comments_id_autor_users_id_user_fk",
-          "tableFrom": "comments",
-          "tableTo": "users",
-          "columnsFrom": ["id_autor"],
-          "columnsTo": ["id_user"],
+        "comment_autorId_user_userId_fk": {
+          "name": "comment_autorId_user_userId_fk",
+          "tableFrom": "comment",
+          "tableTo": "user",
+          "columnsFrom": [
+            "autorId"
+          ],
+          "columnsTo": [
+            "userId"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -181,12 +299,12 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.labels": {
-      "name": "labels",
+    "public.label": {
+      "name": "label",
       "schema": "",
       "columns": {
-        "id_label": {
-          "name": "id_label",
+        "labelId": {
+          "name": "labelId",
           "type": "serial",
           "primaryKey": true,
           "notNull": true
@@ -203,8 +321,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "id_card": {
-          "name": "id_card",
+        "cardId": {
+          "name": "cardId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -212,12 +330,16 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "labels_id_card_cards_id_card_fk": {
-          "name": "labels_id_card_cards_id_card_fk",
-          "tableFrom": "labels",
-          "tableTo": "cards",
-          "columnsFrom": ["id_card"],
-          "columnsTo": ["id_card"],
+        "label_cardId_card_cardId_fk": {
+          "name": "label_cardId_card_cardId_fk",
+          "tableFrom": "label",
+          "tableTo": "card",
+          "columnsFrom": [
+            "cardId"
+          ],
+          "columnsTo": [
+            "cardId"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -225,12 +347,12 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.lists": {
-      "name": "lists",
+    "public.list": {
+      "name": "list",
       "schema": "",
       "columns": {
-        "id_list": {
-          "name": "id_list",
+        "listId": {
+          "name": "listId",
           "type": "serial",
           "primaryKey": true,
           "notNull": true
@@ -241,14 +363,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "list_order": {
-          "name": "list_order",
+        "listOrder": {
+          "name": "listOrder",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "id_table": {
-          "name": "id_table",
+        "tableId": {
+          "name": "tableId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -256,12 +378,16 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "lists_id_table_tables_id_table_fk": {
-          "name": "lists_id_table_tables_id_table_fk",
-          "tableFrom": "lists",
-          "tableTo": "tables",
-          "columnsFrom": ["id_table"],
-          "columnsTo": ["id_table"],
+        "list_tableId_table_tableId_fk": {
+          "name": "list_tableId_table_tableId_fk",
+          "tableFrom": "list",
+          "tableTo": "table",
+          "columnsFrom": [
+            "tableId"
+          ],
+          "columnsTo": [
+            "tableId"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -269,12 +395,12 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.tables": {
-      "name": "tables",
+    "public.table": {
+      "name": "table",
       "schema": "",
       "columns": {
-        "id_table": {
-          "name": "id_table",
+        "tableId": {
+          "name": "tableId",
           "type": "serial",
           "primaryKey": true,
           "notNull": true
@@ -285,28 +411,32 @@
           "primaryKey": false,
           "notNull": true
         },
-        "creation_date": {
-          "name": "creation_date",
+        "creationDate": {
+          "name": "creationDate",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "id_creator": {
-          "name": "id_creator",
-          "type": "integer",
+        "creatorId": {
+          "name": "creatorId",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "tables_id_creator_users_id_user_fk": {
-          "name": "tables_id_creator_users_id_user_fk",
-          "tableFrom": "tables",
-          "tableTo": "users",
-          "columnsFrom": ["id_creator"],
-          "columnsTo": ["id_user"],
+        "table_creatorId_user_userId_fk": {
+          "name": "table_creatorId_user_userId_fk",
+          "tableFrom": "table",
+          "tableTo": "user",
+          "columnsFrom": [
+            "creatorId"
+          ],
+          "columnsTo": [
+            "userId"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -314,13 +444,13 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.users": {
-      "name": "users",
+    "public.user": {
+      "name": "user",
       "schema": "",
       "columns": {
-        "id_user": {
-          "name": "id_user",
-          "type": "serial",
+        "userId": {
+          "name": "userId",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -347,10 +477,12 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "users_mail_unique": {
-          "name": "users_mail_unique",
+        "user_mail_unique": {
+          "name": "user_mail_unique",
           "nullsNotDistinct": false,
-          "columns": ["mail"]
+          "columns": [
+            "mail"
+          ]
         }
       }
     }

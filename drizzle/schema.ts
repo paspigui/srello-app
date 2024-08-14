@@ -5,71 +5,101 @@ import {
   text,
   integer,
   timestamp,
-} from "drizzle-orm/pg-core";
+  primaryKey,
+} from "drizzle-orm/pg-core"
 
-export const users = pgTable("users", {
-  id_user: serial("id_user").primaryKey(),
+import type { AdapterAccountType } from "next-auth/adapters"
+
+export const accounts = pgTable(
+  "account",
+  {
+    userId: text("userId")
+      .notNull()
+      .references(() => users.userId, { onDelete: "cascade" }),
+    type: text("type").$type<AdapterAccountType>().notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: integer("expires_at"),
+    token_type: text("token_type"),
+    scope: text("scope"),
+    id_token: text("id_token"),
+    session_state: text("session_state"),
+  },
+  (account) => ({
+    compoundKey: primaryKey({
+      columns: [account.provider, account.providerAccountId],
+    }),
+  })
+)
+
+export const users = pgTable("user", {
+  userId: text("userId")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
   name: varchar("name", { length: 255 }).notNull(),
   mail: varchar("mail", { length: 255 }).notNull().unique(),
   password: varchar("password", { length: 255 }).notNull(),
-});
+})
 
-export const tables = pgTable("tables", {
-  id_table: serial("id_table").primaryKey(),
+export const tables = pgTable("table", {
+  tableId: serial("tableId").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
-  creation_date: timestamp("creation_date").defaultNow(),
-  id_creator: integer("id_creator")
+  creationDate: timestamp("creationDate").defaultNow(),
+  creatorId: text("creatorId")
     .notNull()
-    .references(() => users.id_user),
-});
+    .references(() => users.userId),
+})
 
-export const lists = pgTable("lists", {
-  id_list: serial("id_list").primaryKey(),
+export const lists = pgTable("list", {
+  listId: serial("listId").primaryKey(),
   title: varchar("title", { length: 100 }).notNull(),
-  list_order: integer("list_order").notNull(),
-  id_table: integer("id_table")
+  listOrder: integer("listOrder").notNull(),
+  tableId: integer("tableId")
     .notNull()
-    .references(() => tables.id_table),
-});
+    .references(() => tables.tableId),
+})
 
-export const cards = pgTable("cards", {
-  id_card: serial("id_card").primaryKey(),
+export const cards = pgTable("card", {
+  cardId: serial("cardId").primaryKey(),
   title: varchar("title", { length: 100 }).notNull(),
   description: text("description"),
-  creation_date: timestamp("creation_date").defaultNow(),
+  creationDate: timestamp("creationDate").defaultNow(),
   deadline: timestamp("deadline"),
-  id_list: integer("id_list")
+  listId: integer("listId")
     .notNull()
-    .references(() => lists.id_list),
-  id_assigned: integer("id_assigned").references(() => users.id_user),
-});
+    .references(() => lists.listId),
+  assignedId: text("assignedId").references(() => users.userId),
+})
 
-export const labels = pgTable("labels", {
-  id_label: serial("id_label").primaryKey(),
+export const labels = pgTable("label", {
+  labelId: serial("labelId").primaryKey(),
   name: varchar("name", { length: 50 }).notNull(),
   color: varchar("color", { length: 20 }).notNull(),
-  id_card: integer("id_card")
+  cardId: integer("cardId")
     .notNull()
-    .references(() => cards.id_card),
-});
+    .references(() => cards.cardId),
+})
 
-export const comments = pgTable("comments", {
-  id_comment: serial("id_comment").primaryKey(),
+export const comments = pgTable("comment", {
+  commentId: serial("commentId").primaryKey(),
   content: text("content").notNull(),
   date: timestamp("date").defaultNow(),
-  id_card: integer("id_card")
+  cardId: integer("cardId")
     .notNull()
-    .references(() => cards.id_card),
-  id_autor: integer("id_autor")
+    .references(() => cards.cardId),
+  autorId: text("autorId")
     .notNull()
-    .references(() => users.id_user),
-});
+    .references(() => users.userId),
+})
 
-export const activities = pgTable("activities", {
-  id_activity: serial("id_activity").primaryKey(),
+export const activities = pgTable("activity", {
+  activityId: serial("activityId").primaryKey(),
   description: text("description").notNull(),
   date: timestamp("date").defaultNow(),
-  id_card: integer("id_card")
+  cardId: integer("cardId")
     .notNull()
-    .references(() => cards.id_card),
-});
+    .references(() => cards.cardId),
+})
