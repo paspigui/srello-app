@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS "activity" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "card" (
 	"cardId" serial PRIMARY KEY NOT NULL,
-	"title" varchar(100) NOT NULL,
+	"title" text NOT NULL,
 	"description" text,
 	"creationDate" timestamp DEFAULT now(),
 	"deadline" timestamp,
@@ -40,35 +40,42 @@ CREATE TABLE IF NOT EXISTS "comment" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "label" (
 	"labelId" serial PRIMARY KEY NOT NULL,
-	"name" varchar(50) NOT NULL,
-	"color" varchar(20) NOT NULL,
+	"name" text NOT NULL,
+	"color" text NOT NULL,
 	"cardId" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "list" (
 	"listId" serial PRIMARY KEY NOT NULL,
-	"title" varchar(100) NOT NULL,
+	"title" text NOT NULL,
 	"listOrder" integer NOT NULL,
 	"tableId" integer NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "session" (
+	"sessionToken" text PRIMARY KEY NOT NULL,
+	"userId" text NOT NULL,
+	"expires" timestamp NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "table" (
 	"tableId" serial PRIMARY KEY NOT NULL,
-	"title" varchar(255) NOT NULL,
+	"title" text NOT NULL,
 	"creationDate" timestamp DEFAULT now(),
 	"creatorId" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user" (
-	"userId" text PRIMARY KEY NOT NULL,
-	"name" varchar(255) NOT NULL,
-	"mail" varchar(255) NOT NULL,
-	"password" varchar(255) NOT NULL,
-	CONSTRAINT "user_mail_unique" UNIQUE("mail")
+	"id" text PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	"email" text NOT NULL,
+	"emailVerified" timestamp,
+	"image" text,
+	CONSTRAINT "user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_userId_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("userId") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -86,7 +93,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "card" ADD CONSTRAINT "card_assignedId_user_userId_fk" FOREIGN KEY ("assignedId") REFERENCES "public"."user"("userId") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "card" ADD CONSTRAINT "card_assignedId_user_id_fk" FOREIGN KEY ("assignedId") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -98,7 +105,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "comment" ADD CONSTRAINT "comment_autorId_user_userId_fk" FOREIGN KEY ("autorId") REFERENCES "public"."user"("userId") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "comment" ADD CONSTRAINT "comment_autorId_user_id_fk" FOREIGN KEY ("autorId") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -116,7 +123,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "table" ADD CONSTRAINT "table_creatorId_user_userId_fk" FOREIGN KEY ("creatorId") REFERENCES "public"."user"("userId") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "session" ADD CONSTRAINT "session_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "table" ADD CONSTRAINT "table_creatorId_user_id_fk" FOREIGN KEY ("creatorId") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

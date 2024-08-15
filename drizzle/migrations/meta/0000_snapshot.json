@@ -1,5 +1,5 @@
 {
-  "id": "a6fb57ec-ceef-4b88-be9a-09c0c531ac23",
+  "id": "05b820b5-11d1-4ca7-831c-408b76b52012",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -77,15 +77,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "account_userId_user_userId_fk": {
-          "name": "account_userId_user_userId_fk",
+        "account_userId_user_id_fk": {
+          "name": "account_userId_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
           "columnsTo": [
-            "userId"
+            "id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -163,7 +163,7 @@
         },
         "title": {
           "name": "title",
-          "type": "varchar(100)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -214,15 +214,15 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "card_assignedId_user_userId_fk": {
-          "name": "card_assignedId_user_userId_fk",
+        "card_assignedId_user_id_fk": {
+          "name": "card_assignedId_user_id_fk",
           "tableFrom": "card",
           "tableTo": "user",
           "columnsFrom": [
             "assignedId"
           ],
           "columnsTo": [
-            "userId"
+            "id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -282,15 +282,15 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "comment_autorId_user_userId_fk": {
-          "name": "comment_autorId_user_userId_fk",
+        "comment_autorId_user_id_fk": {
+          "name": "comment_autorId_user_id_fk",
           "tableFrom": "comment",
           "tableTo": "user",
           "columnsFrom": [
             "autorId"
           ],
           "columnsTo": [
-            "userId"
+            "id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -311,13 +311,13 @@
         },
         "name": {
           "name": "name",
-          "type": "varchar(50)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
         "color": {
           "name": "color",
-          "type": "varchar(20)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -359,7 +359,7 @@
         },
         "title": {
           "name": "title",
-          "type": "varchar(100)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -395,6 +395,48 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.session": {
+      "name": "session",
+      "schema": "",
+      "columns": {
+        "sessionToken": {
+          "name": "sessionToken",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "name": "expires",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "session_userId_user_id_fk": {
+          "name": "session_userId_user_id_fk",
+          "tableFrom": "session",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.table": {
       "name": "table",
       "schema": "",
@@ -407,7 +449,7 @@
         },
         "title": {
           "name": "title",
-          "type": "varchar(255)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -427,15 +469,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "table_creatorId_user_userId_fk": {
-          "name": "table_creatorId_user_userId_fk",
+        "table_creatorId_user_id_fk": {
+          "name": "table_creatorId_user_id_fk",
           "tableFrom": "table",
           "tableTo": "user",
           "columnsFrom": [
             "creatorId"
           ],
           "columnsTo": [
-            "userId"
+            "id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -448,40 +490,46 @@
       "name": "user",
       "schema": "",
       "columns": {
-        "userId": {
-          "name": "userId",
+        "id": {
+          "name": "id",
           "type": "text",
           "primaryKey": true,
           "notNull": true
         },
         "name": {
           "name": "name",
-          "type": "varchar(255)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "mail": {
-          "name": "mail",
-          "type": "varchar(255)",
+        "email": {
+          "name": "email",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "password": {
-          "name": "password",
-          "type": "varchar(255)",
+        "emailVerified": {
+          "name": "emailVerified",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "user_mail_unique": {
-          "name": "user_mail_unique",
+        "user_email_unique": {
+          "name": "user_email_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "mail"
+            "email"
           ]
         }
       }

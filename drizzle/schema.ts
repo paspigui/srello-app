@@ -1,11 +1,11 @@
 import {
   pgTable,
   serial,
-  varchar,
   text,
   integer,
   timestamp,
   primaryKey,
+  boolean,
 } from "drizzle-orm/pg-core"
 
 import type { AdapterAccountType } from "next-auth/adapters"
@@ -15,7 +15,7 @@ export const accounts = pgTable(
   {
     userId: text("userId")
       .notNull()
-      .references(() => users.userId, { onDelete: "cascade" }),
+      .references(() => users.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccountType>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
@@ -35,27 +35,36 @@ export const accounts = pgTable(
 )
 
 export const users = pgTable("user", {
-  userId: text("userId")
+  id: text("id")
     .notNull()
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  name: varchar("name", { length: 255 }).notNull(),
-  mail: varchar("mail", { length: 255 }).notNull().unique(),
-  password: varchar("password", { length: 255 }).notNull(),
+  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  image: text("image"),
+})
+
+export const sessions = pgTable("session", {
+  sessionToken: text("sessionToken").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
 })
 
 export const tables = pgTable("table", {
   tableId: serial("tableId").primaryKey(),
-  title: varchar("title", { length: 255 }).notNull(),
+  title: text("title").notNull(),
   creationDate: timestamp("creationDate").defaultNow(),
   creatorId: text("creatorId")
     .notNull()
-    .references(() => users.userId),
+    .references(() => users.id),
 })
 
 export const lists = pgTable("list", {
   listId: serial("listId").primaryKey(),
-  title: varchar("title", { length: 100 }).notNull(),
+  title: text("title").notNull(),
   listOrder: integer("listOrder").notNull(),
   tableId: integer("tableId")
     .notNull()
@@ -64,20 +73,20 @@ export const lists = pgTable("list", {
 
 export const cards = pgTable("card", {
   cardId: serial("cardId").primaryKey(),
-  title: varchar("title", { length: 100 }).notNull(),
+  title: text("title").notNull(),
   description: text("description"),
   creationDate: timestamp("creationDate").defaultNow(),
   deadline: timestamp("deadline"),
   listId: integer("listId")
     .notNull()
     .references(() => lists.listId),
-  assignedId: text("assignedId").references(() => users.userId),
+  assignedId: text("assignedId").references(() => users.id),
 })
 
 export const labels = pgTable("label", {
   labelId: serial("labelId").primaryKey(),
-  name: varchar("name", { length: 50 }).notNull(),
-  color: varchar("color", { length: 20 }).notNull(),
+  name: text("name").notNull(),
+  color: text("color").notNull(),
   cardId: integer("cardId")
     .notNull()
     .references(() => cards.cardId),
@@ -92,7 +101,7 @@ export const comments = pgTable("comment", {
     .references(() => cards.cardId),
   autorId: text("autorId")
     .notNull()
-    .references(() => users.userId),
+    .references(() => users.id),
 })
 
 export const activities = pgTable("activity", {
