@@ -1,6 +1,6 @@
 import { Logo } from "@/components/logo"
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export const Navbar = () => {
   return (
@@ -12,12 +12,10 @@ export const Navbar = () => {
             <Link href="./sign-in">Sign In</Link>
           </Button>
           <Button variant="secondary">
-            <Link href="./sign-up">
-              Sign Up
-            </Link>
+            <Link href="./sign-up">Sign Up</Link>
           </Button>
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-import { SignOutButton } from "@/components/auth/signOutButton"
 import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
+import { UserButton } from "@clerk/nextjs"
 
 export const Navbar = () => {
   return (
@@ -11,7 +11,7 @@ export const Navbar = () => {
           <Button variant="default" className="mr-2">
             Create a board
           </Button>
-          <SignOutButton />
+          <UserButton />
         </div>
       </div>
     </div>

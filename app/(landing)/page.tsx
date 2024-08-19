@@ -1,5 +1,4 @@
 import { Navbar } from "@/app/(landing)/_components/navbar"
-import { SignInButton } from "@/components/auth/signInButton"
 
 export default function LandingPage() {
   return (
@@ -15,9 +14,7 @@ export default function LandingPage() {
         <div className="text-3xl md:text-6xl text-center bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white px-4 p-2 rounded-md pb-4 w-fit ">
           Organize anything, together.
         </div>
-        <div className=" my-2">
-          <SignInButton />
-        </div>
+        <div className=" my-2"></div>
       </div>
     </>
   )
