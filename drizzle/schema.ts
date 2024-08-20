@@ -5,10 +5,7 @@ import {
   integer,
   timestamp,
   primaryKey,
-  boolean,
 } from "drizzle-orm/pg-core"
-
-import type { AdapterAccountType } from "next-auth/adapters"
 
 export const accounts = pgTable(
   "account",
@@ -16,7 +13,7 @@ export const accounts = pgTable(
     userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    type: text("type").$type<AdapterAccountType>().notNull(),
+    type: text("type").$type<string>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
     refresh_token: text("refresh_token"),
@@ -99,7 +96,7 @@ export const comments = pgTable("comment", {
   cardId: integer("cardId")
     .notNull()
     .references(() => cards.cardId),
-  autorId: text("autorId")
+  authorId: text("authorId")
     .notNull()
     .references(() => users.id),
 })

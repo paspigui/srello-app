@@ -1,5 +1,5 @@
 {
-  "id": "05b820b5-11d1-4ca7-831c-408b76b52012",
+  "id": "5931064b-7b3e-4aaf-a131-1bda9d889b0f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -260,8 +260,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "autorId": {
-          "name": "autorId",
+        "authorId": {
+          "name": "authorId",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -282,12 +282,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "comment_autorId_user_id_fk": {
-          "name": "comment_autorId_user_id_fk",
+        "comment_authorId_user_id_fk": {
+          "name": "comment_authorId_user_id_fk",
           "tableFrom": "comment",
           "tableTo": "user",
           "columnsFrom": [
-            "autorId"
+            "authorId"
           ],
           "columnsTo": [
             "id"

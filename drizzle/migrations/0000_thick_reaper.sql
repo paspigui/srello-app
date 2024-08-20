@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS "comment" (
 	"content" text NOT NULL,
 	"date" timestamp DEFAULT now(),
 	"cardId" integer NOT NULL,
-	"autorId" text NOT NULL
+	"authorId" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "label" (
@@ -105,7 +105,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "comment" ADD CONSTRAINT "comment_autorId_user_id_fk" FOREIGN KEY ("autorId") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "comment" ADD CONSTRAINT "comment_authorId_user_id_fk" FOREIGN KEY ("authorId") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

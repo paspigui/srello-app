@@ -7,6 +7,7 @@ export const Navbar = () => {
     <div className=" fixed top-0 w-full h-14 px-4 border-b shadow-sm bg-white flex items-center">
       <div className=" md:max-w-screen-2xl mx-auto flex items-center w-full justify-between">
         <Logo />
+
         <div>
           <Button variant="default" className="mr-2">
             <Link href="./sign-in">Sign In</Link>
