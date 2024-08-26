@@ -4,10 +4,8 @@ import { users } from "@/drizzle/schema"
 import { prettyJSON } from "hono/pretty-json"
 import { logger } from "hono/logger"
 
-const app = new Hono().get("/", async (c) => {
-  app.use(prettyJSON())
-  app.use(logger())
-
+const app = new Hono()
+app.use(prettyJSON(), logger()).get("/", async (c) => {
   const data = await db
     .select({
       id: users.id,
