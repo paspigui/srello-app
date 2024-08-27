@@ -9,7 +9,7 @@ export const WelcomeMsg = () => {
       <div className="text-center">
         <h1 className="text-2xl font-semibold">
           Welcome to Srello{isLoaded ? ", " : " "}
-          {user?.firstName} !
+          {user?.firstName || user?.username} !
         </h1>
       </div>
     </div>

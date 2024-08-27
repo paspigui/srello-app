@@ -1,5 +1,4 @@
 import { Logo } from "@/components/logo"
-import { Button } from "@/components/ui/button"
 import { UserButton } from "@clerk/nextjs"
 import Link from "next/link"
 
@@ -11,10 +10,8 @@ export const Navbar = () => {
           <Logo />
         </Link>
         <div className="flex items-center">
-          <Button variant="default" className="mr-2">
-            Create a board
-          </Button>
           <UserButton
+            showName={true}
             appearance={{
               elements: {
                 avatarBox: {
