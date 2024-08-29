@@ -8,6 +8,10 @@ const app = new Hono().use(prettyJSON(), logger()).get("/", async (c) => {
   const data = await db
     .select({
       id: users.id,
+      email: users.email,
+      name: users.name,
+      emailVerified: users.emailVerified,
+      image: users.image,
     })
     .from(users)
   return c.json({ data })

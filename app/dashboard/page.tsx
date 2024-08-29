@@ -10,9 +10,10 @@ export default function Home() {
   const handleOpen = () => {
     setOpen(!open)
   }
+
   return (
     <>
-      <div className="md:max-w-screen-2xl mx-auto py-5">
+      <div className="px-4 md:max-w-screen-2xl mx-auto py-5">
         <div className="py-5">
           <h1 className="text-2xl">Tables</h1>
         </div>
@@ -62,7 +63,7 @@ export default function Home() {
           )}
           {/* TODO: 
           List of tables
-          dynamic sort by
+          sort by
            */}
         </div>
       </div>
